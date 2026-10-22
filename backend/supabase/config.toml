@@ -1,0 +1,92 @@
+# Configuration Supabase CLI — Crédit des îles françaises (PROJET).
+# Valable pour le développement local (`supabase start`) et pour `supabase config push` (projet hébergé).
+# ⚠ Remplacez « erere » / « erereadmin » par les vrais noms de vos projets Vercel (voir README.md).
+# Non exécuté dans l'environnement de rédaction : à valider avec votre version de la CLI Supabase.
+
+project_id = "credit-des-iles-francaises"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 500            # plafond de lignes renvoyées par requête (anti-aspiration)
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[studio]
+enabled = true
+port = 54323
+
+[inbucket]                # boîte mail de test locale (e-mails de confirmation / réinitialisation)
+enabled = true
+port = 54324
+
+# Services inutiles : désactivés pour réduire la surface d'attaque.
+[realtime]
+enabled = false
+[storage]
+enabled = false
+[edge_runtime]
+enabled = false
+[analytics]
+enabled = false
+
+[auth]
+enabled = true
+# URL du SITE PUBLIC (pas de l'admin). En production : https://creditdesilesfrancaises.vercel.app
+site_url = "http://localhost:3000"
+# Seules ces origines peuvent recevoir une redirection après connexion / confirmation / réinitialisation.
+additional_redirect_urls = [
+  "http://localhost:3000/**",
+  "http://localhost:3001/**",
+  "https://creditdesilesfrancaises.vercel.app/**",
+  "https://creditdesilesfrancaisesadmin.vercel.app/**",
+]
+jwt_expiry = 3600                        # jeton d'accès valable 1 h
+enable_refresh_token_rotation = true     # rotation des jetons de rafraîchissement
+refresh_token_reuse_interval = 10
+enable_signup = true
+enable_anonymous_sign_ins = false
+enable_manual_linking = false
+minimum_password_length = 8
+password_requirements = "letters_digits" # au moins une lettre ET un chiffre
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+secure_password_change = true
+max_frequency = "60s"
+# Démonstration : confirmation d'e-mail désactivée (le SMTP par défaut de Supabase est très limité).
+# Pour l'activer : passer à true ET configurer un SMTP (Authentication > Emails > SMTP Settings).
+enable_confirmations = false
+
+[auth.mfa.totp]
+enroll_enabled = true    # le MFA TOTP est disponible…
+verify_enabled = true    # …mais n'est imposé aux admins que si app_settings.require_admin_mfa = true
+
+[auth.rate_limit]        # limitation de débit des routes d'authentification (par adresse IP)
+email_sent = 2
+sign_in_sign_ups = 30    # connexions + inscriptions par tranche de 5 minutes et par IP
+token_verifications = 30
+token_refresh = 150
+anonymous_users = 30
+
+# CAPTCHA Cloudflare Turnstile : PRÊT mais DÉSACTIVÉ par défaut.
+# Pour l'activer : décommenter, définir AUTH_CAPTCHA_SECRET, puis NEXT_PUBLIC_CAPTCHA_ENABLED=true côté frontend.
+# [auth.captcha]
+# enabled = true
+# provider = "turnstile"
+# secret = "env(AUTH_CAPTCHA_SECRET)"
+
+# Durée de session (réglage réservé aux plans payants — à activer si disponible) :
+# [auth.sessions]
+# timebox = "24h"
+# inactivity_timeout = "8h"

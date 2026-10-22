@@ -1,0 +1,16 @@
+{
+  "name": "credit-des-iles-francaises-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend Supabase (SQL, RLS, RPC, tests) — projet universitaire, données fictives uniquement",
+  "type": "module",
+  "scripts": {
+    "build:setup": "sh scripts/build_setup.sh",
+    "test": "vitest run",
+    "test:static": "vitest run tests/static.test.ts"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "^2.47.10",
+    "vitest": "^2.1.8"
+  }
+}
