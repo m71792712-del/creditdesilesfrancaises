@@ -43,7 +43,7 @@ export function RegisterForm({ nonce }: { nonce?: string }) {
       <TextField name="firstName" icon={User} label={t('auth.firstName')} placeholder={t('ph.firstName')} autoComplete="given-name" required minLength={2} maxLength={60} defaultValue={v?.firstName} error={e?.firstName} />
       <TextField name="phone" type="tel" icon={Phone} label={t('auth.phone')} placeholder={t('ph.phone')} autoComplete="tel" required maxLength={20} defaultValue={v?.phone} error={e?.phone} />
       <TextField name="email" type="email" icon={Mail} label={t('auth.email')} placeholder={t('ph.email')} autoComplete="email" required maxLength={254} defaultValue={v?.email} error={e?.email} />
-      <TextField name="demoColor" icon={Palette} label={t('auth.demoColor')} placeholder={t('ph.color')} autoComplete="off" required maxLength={30} defaultValue={v?.demoColor} error={e?.demoColor} />
+      <TextField name="demoColor" label={t('auth.demoColor')} placeholder={t('ph.color')} autoComplete="off" required maxLength={30} defaultValue={v?.demoColor} error={e?.demoColor} />
       <TextField name="demoCity" icon={MapPin} label={t('auth.demoCity')} placeholder={t('ph.city')} autoComplete="off" required maxLength={60} defaultValue={v?.demoCity} error={e?.demoCity} />
       <TextField name="password" type="password" icon={Lock} label={t('auth.password')} autoComplete="new-password" required minLength={8} maxLength={72} hint={t('auth.password.hint')} error={e?.password} />
       <div>

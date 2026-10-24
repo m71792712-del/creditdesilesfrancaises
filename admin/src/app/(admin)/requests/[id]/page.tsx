@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { requireAdmin } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
 import { StatusForm } from '@/components/Forms';
+import { ProfileCard } from '@/components/ProfileCard';
 import { PageHeader, StatusBadge } from '@/components/ui';
 import type { HistoryRow, LoanDetail } from '@/lib/types';
 import { formatDate, formatMoney, UUID_RE } from '@/lib/utils';
@@ -27,7 +28,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
   const [{ data }, { data: hist }] = await Promise.all([
     supabase
       .from('loan_requests')
-      .select('*, profiles(first_name,last_name,email,phone), banks(name,territory), loan_purposes(label_fr), card_types(name,family)')
+      .select('*, profiles(first_name,last_name,email,phone,demo_color,demo_city,demo_digit,created_at), banks(name,territory), loan_purposes(label_fr), card_types(name,family)')
       .eq('id', id)
       .maybeSingle(),
     supabase.from('loan_status_history').select('id,old_status,new_status,comment,created_at').eq('loan_id', id).order('created_at', { ascending: false }),
@@ -57,12 +58,11 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
           </section>
 
           <section className="card" aria-labelledby="req">
-            <h2 id="req" className="mb-2 text-lg font-semibold">Demandeur</h2>
-            <dl className="divide-y divide-slate-100">
-              <Row label="Nom">{loan.profiles ? `${loan.profiles.first_name} ${loan.profiles.last_name}` : '—'}</Row>
-              <Row label="E-mail">{loan.profiles?.email ?? '—'}</Row>
-              <Row label="Téléphone">{loan.profiles?.phone || '—'}</Row>
-            </dl>
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+              <h2 id="req" className="text-lg font-semibold">Demandeur — informations saisies</h2>
+              <Link href={`/users/${loan.user_id}`} className="text-sm font-medium text-ocean-600 hover:underline">Fiche complète et toutes ses demandes →</Link>
+            </div>
+            {loan.profiles ? <ProfileCard profile={loan.profiles} /> : <p className="text-sm text-slate-500">Profil introuvable.</p>}
           </section>
 
           <section className="card" aria-labelledby="hist">

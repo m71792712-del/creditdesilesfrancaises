@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { LogOut } from 'lucide-react';
-import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
 import { Logo } from '@/components/layout/Logo';
 import { SidebarNav } from '@/components/layout/SidebarNav';
 import { logout } from '@/lib/actions/auth';
@@ -29,7 +28,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
         <header className="flex flex-wrap items-center justify-between gap-3 border-b border-sky-100 bg-white px-4 py-3 sm:px-8">
           <p className="font-semibold text-navy-900">{t('shell.title')}</p>
           <div className="flex items-center gap-3">
-            <LanguageSwitcher />
+            
             <div className="flex items-center gap-2">
               <span aria-hidden className="grid h-9 w-9 place-items-center rounded-full bg-ocean-600 text-xs font-bold text-white">
                 {profile ? initials(profile.first_name, profile.last_name) : '?'}

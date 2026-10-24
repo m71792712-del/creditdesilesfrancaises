@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { requireAdmin } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
 import { EmptyState, PageHeader, Pagination } from '@/components/ui';
@@ -24,7 +25,7 @@ export default async function UsersPage({ searchParams }: { searchParams: Promis
 
   return (
     <>
-      <PageHeader title="Utilisateurs" subtitle="Comptes inscrits sur le site (lecture seule)" />
+      <PageHeader title="Utilisateurs" subtitle="Cliquez sur un nom pour voir toutes les informations saisies et ses demandes" />
       <form method="get" className="card mb-5 flex flex-wrap items-end gap-3 !p-4">
         <div className="min-w-[14rem] flex-1">
           <label htmlFor="q" className="label">Rechercher (nom, prénom ou e-mail)</label>
@@ -42,7 +43,7 @@ export default async function UsersPage({ searchParams }: { searchParams: Promis
             <tbody className="divide-y divide-slate-100">
               {users.map((u) => (
                 <tr key={u.id}>
-                  <td className="td font-medium">{u.first_name} {u.last_name}</td>
+                  <td className="td font-medium"><Link className="text-ocean-600 hover:underline" href={`/users/${u.id}`}>{u.first_name} {u.last_name}</Link></td>
                   <td className="td">{u.email}</td>
                   <td className="td whitespace-nowrap">{u.phone || '—'}</td>
                   <td className="td">{u.role === 'admin' ? <span className="rounded-full bg-navy-100 px-2.5 py-1 text-xs font-semibold text-navy-800">Admin</span> : 'Utilisateur'}</td>

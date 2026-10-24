@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
-import { DemoBanner } from '@/components/layout/DemoBanner';
+
 import { APP_NAME } from '@/lib/config';
 import { getT } from '@/lib/i18n';
 import { I18nProvider } from '@/lib/i18n/provider';
@@ -8,7 +8,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: { default: APP_NAME, template: `%s · ${APP_NAME}` },
-  description: 'Plateforme universitaire de démonstration de demande de prêt (données fictives uniquement).',
+  description: 'Plateforme de demande de prêt.',
 };
 export const viewport: Viewport = { themeColor: '#0b2d5e', width: 'device-width', initialScale: 1 };
 
@@ -22,7 +22,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:p-2">
             {t('nav.skip')}
           </a>
-          <DemoBanner />
+          
           {children}
         </I18nProvider>
       </body>

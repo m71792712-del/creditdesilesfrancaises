@@ -24,10 +24,7 @@ export default async function ProfilePage() {
         </dl>
         <ProfileForm profile={profile} />
       </section>
-      <section className="card border-red-200">
-        <h2 className="mb-4 text-lg font-semibold text-red-700">{t('profile.delete.title')}</h2>
-        <DeleteAccountForm />
-      </section>
+      
     </div>
   );
 }

@@ -3,7 +3,7 @@
 -- ============ migrations/20261021000100_schema.sql ============
 -- =====================================================================
 -- Crédit des îles françaises — BACKEND SUPABASE
--- PROJET : données fictives uniquement.
+-- PROJET
 -- Migration 1/4 : schéma (tables, contraintes, index).
 -- =====================================================================
 

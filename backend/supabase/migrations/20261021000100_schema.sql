@@ -1,6 +1,5 @@
 -- =====================================================================
 -- Crédit des îles françaises — BACKEND SUPABASE
--- PROJET : données fictives uniquement.
 -- Migration 1/4 : schéma (tables, contraintes, index).
 -- =====================================================================
 

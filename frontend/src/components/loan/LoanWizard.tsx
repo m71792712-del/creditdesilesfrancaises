@@ -278,9 +278,9 @@ function VerificationStep({ values, errors, update }: { values: LoanFormValues; 
     <>
       <div role="note" className="flex gap-3 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
         <TriangleAlert className="mt-0.5 h-5 w-5 shrink-0" aria-hidden />
-        <p>{t('apply.demo.warning')}</p>
+        
       </div>
-      <TextField label={t('apply.demo.color')} icon={Palette} required maxLength={30} autoComplete="off" placeholder={t('ph.color')} value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value })} error={errors.demoColor} />
+      <TextField label={t('apply.demo.color')} required maxLength={30} autoComplete="off" placeholder={t('ph.color')} value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value })} error={errors.demoColor} />
       <div className="grid gap-4 sm:grid-cols-2">
         <TextField label={t('apply.demo.city')} icon={MapPin} required maxLength={60} autoComplete="off" placeholder={t('ph.city')} value={values.demoCity} onChange={(e) => update({ demoCity: e.target.value })} error={errors.demoCity} />
         <SelectField label={t('apply.demo.digit')} required value={values.demoDigit} onChange={(e) => update({ demoDigit: e.target.value })} error={errors.demoDigit}>

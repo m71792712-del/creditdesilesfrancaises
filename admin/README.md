@@ -8,6 +8,7 @@ Application Next.js séparée du site public, branchée sur le **même projet Su
 - Connexion e-mail + mot de passe ; **tout compte non-admin est refusé et déconnecté** (message identique, pas d'énumération).
 - Tableau de bord (`admin_stats`), demandes de prêt (filtres statut/motif, pagination), détail + **changement de statut avec commentaire obligatoire** (historique + audit faits par la base).
 - Modération des suggestions « Autre banque » (approuver / fusionner / rejeter).
+- **Fiche utilisateur** : un clic sur un nom (liste des utilisateurs) ouvre toutes les informations saisies à l'inscription (nom, e-mail, téléphone, données de démonstration fictives) et la liste de ses demandes. Le détail d'une demande affiche aussi le profil complet du demandeur.
 - Gestion des banques (ajout, activation/désactivation), liste des utilisateurs (recherche), journal d'audit, réglages (limites de montant, quotas).
 
 ## Sécurité

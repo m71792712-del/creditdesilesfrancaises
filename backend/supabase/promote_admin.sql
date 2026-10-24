@@ -11,7 +11,7 @@
 
 do $$
 declare
-  v_email text := 'VOTRE_EMAIL@exemple.com';   -- <-- À REMPLACER
+  v_email text := 'creditdesilesfrancaise@gmail.com';   -- <-- À REMPLACER
   v_id uuid;
 begin
   select id into v_id from public.profiles where lower(email) = lower(v_email);

@@ -26,7 +26,7 @@ export interface LoanDetail extends LoanListRow {
   purpose_details: string | null;
   description: string;
   updated_at: string;
-  profiles: { first_name: string; last_name: string; email: string; phone: string | null } | null;
+  profiles: ProfileInfo | null;
   banks: { name: string; territory: string } | null;
   card_types: { name: string; family: string } | null;
 }
@@ -55,6 +55,18 @@ export interface SuggestionRow {
   status: 'pending' | 'approved' | 'rejected' | 'merged';
   created_at: string;
   reviewed_at: string | null;
+}
+
+/** Informations saisies par l'utilisateur à l'inscription (demo_* = données de démonstration fictives). */
+export interface ProfileInfo {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
+  demo_color: string | null;
+  demo_city: string | null;
+  demo_digit: number | null;
+  created_at: string;
 }
 
 export interface UserRow {
