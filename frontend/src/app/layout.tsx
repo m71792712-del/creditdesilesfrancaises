@@ -8,7 +8,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: { default: APP_NAME, template: `%s · ${APP_NAME}` },
-  description: 'Plateforme de demande de prêt.',
+  description: 'Plateforme universitaire de démonstration de demande de prêt (données fictives uniquement).',
 };
 export const viewport: Viewport = { themeColor: '#0b2d5e', width: 'device-width', initialScale: 1 };
 

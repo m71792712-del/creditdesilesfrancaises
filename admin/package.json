@@ -1,0 +1,30 @@
+{
+  "name": "credit-des-iles-francaises-admin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interface d'administration (compte admin unique) — projet universitaire, données fictives uniquement",
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/ssr": "0.5.2",
+    "@supabase/supabase-js": "2.47.10",
+    "lucide-react": "0.468.0",
+    "next": "15.5.28",
+    "react": "19.2.9",
+    "react-dom": "19.2.9"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "autoprefixer": "10.4.20",
+    "postcss": "8.4.49",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.7.2"
+  },
+  "engines": { "node": ">=20" }
+}

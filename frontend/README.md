@@ -2,7 +2,7 @@
 
 > **Projet universitaire — utilisez uniquement des données fictives. Aucune décision de financement réelle n'est prise.**
 
-Application Next.js 15 (App Router, TypeScript strict, Tailwind) : site public + espace utilisateur, déployée sur `https://creditdesilesfrancaises.vercel.app` . Elle se branche sur le **backend Supabase** déjà livré (`backend.zip`, voir son `docs/CONTRACT.md`). L'admin est une application **séparée** (`admin.zip`).
+Application Next.js 15 (App Router, TypeScript strict, Tailwind) : site public + espace utilisateur, déployée sur `https://erere.vercel.app` (remplacez « erere » par le vrai nom de votre projet Vercel). Elle se branche sur le **backend Supabase** déjà livré (`backend.zip`, voir son `docs/CONTRACT.md`). L'admin est une application **séparée** (`admin.zip`).
 
 ## Ce qui est testé, ce qui ne l'est pas (lisez ceci d'abord)
 
@@ -33,14 +33,14 @@ npm run typecheck && npm test
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | URL du projet Supabase | Project Settings → API |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | clé **anon / publishable** | publique par conception, protégée par la RLS. **Jamais** la clé `service_role` |
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` / `https://creditdesilesfrancaises.vercel.app` | utilisée pour les liens des e-mails |
+| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` / `https://erere.vercel.app` | utilisée pour les liens des e-mails |
 | `NEXT_PUBLIC_CAPTCHA_ENABLED` | `false` (défaut) | `true` active Turnstile |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | clé publique Turnstile | seulement si CAPTCHA |
 
 ## Branchement sur Supabase
 
 1. Appliquez le backend (`backend.zip`) : `supabase/setup_complete.sql` dans le SQL Editor d'un projet de **test**, puis lancez `tests/sql/security_tests.sql`.
-2. Authentication → URL Configuration : *Site URL* = `https://creditdesilesfrancaises.vercel.app` ; *Redirect URLs* : `https://creditdesilesfrancaises.vercel.app/**`, `https://creditdesilesfrancaisesadmin.vercel.app/**`, `http://localhost:3000/**`.
+2. Authentication → URL Configuration : *Site URL* = `https://erere.vercel.app` ; *Redirect URLs* : `https://erere.vercel.app/**`, `https://erereadmin.vercel.app/**`, `http://localhost:3000/**`.
 3. Mot de passe : 8 caractères min., lettres + chiffres ; confirmation d'e-mail désactivée pour la démo (sinon configurez un SMTP).
 4. Copiez l'URL et la clé `anon` dans `.env.local`.
 
