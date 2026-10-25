@@ -10,7 +10,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
   );
 }
 
-/** Affiche TOUTES les informations saisies par l'utilisateur à son inscription. */
+/** Affiche TOUTES les informations saisies par chaque utilisateur à son inscription. */
 export function ProfileCard({ profile, role, updatedAt }: { profile: ProfileInfo; role?: string; updatedAt?: string }) {
   return (
     <>

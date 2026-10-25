@@ -1,4 +1,4 @@
-/** Codes d'erreur du backend (docs/CONTRACT.md §5) -> clés de traduction « err.<code> ». */
+/** Codes d'erreurs du  backend (docs/CONTRACT.md §5) -> clés de traduction « err.<code> ». */
 export const BACKEND_ERROR_CODES = [
   'not_authenticated',
   'forbidden',
