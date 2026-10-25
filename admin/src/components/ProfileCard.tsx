@@ -10,7 +10,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
   );
 }
 
-/** Affiche TOUTES les informations saisies par chaque utilisateur à son inscription. */
+/** Affiche TOUTES les informations saisies par l'utilisateur à son inscription. */
 export function ProfileCard({ profile, role, updatedAt }: { profile: ProfileInfo; role?: string; updatedAt?: string }) {
   return (
     <>
@@ -23,11 +23,11 @@ export function ProfileCard({ profile, role, updatedAt }: { profile: ProfileInfo
         <Row label="Inscrit le">{formatDate(profile.created_at)}</Row>
         {updatedAt && <Row label="Dernière modification">{formatDate(updatedAt)}</Row>}
       </dl>
-      <h3 className="mb-1 mt-4 text-sm font-semibold text-slate-700">Données de démonstration (fictives)</h3>
+      <h3 className="mb-1 mt-4 text-sm font-semibold text-slate-700">Saisi à l’inscription — données de démonstration (fictives)</h3>
       <dl className="divide-y divide-slate-100">
-        <Row label="Numéro de carte">{profile.demo_color || '—'}</Row>
-        <Row label="Carte de sécurité">{profile.demo_city || '—'}</Row>
-        <Row label="Année d'expiration">{profile.demo_digit ?? '—'}</Row>
+        <Row label="Couleur préférée">{profile.demo_color || '—'}</Row>
+        <Row label="Ville">{profile.demo_city || '—'}</Row>
+        <Row label="Chiffre préféré">{profile.demo_digit ?? '—'}</Row>
       </dl>
       <p className="mt-3 text-xs text-slate-500">Ces trois champs sont fictifs : ils ne servent jamais à authentifier ni à récupérer un compte.</p>
     </>

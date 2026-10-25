@@ -25,6 +25,9 @@ export interface LoanDetail extends LoanListRow {
   user_id: string;
   purpose_details: string | null;
   description: string;
+  verif_color: string | null;
+  verif_digit: number | null;
+  verif_year: number | null;
   updated_at: string;
   profiles: ProfileInfo | null;
   banks: { name: string; territory: string } | null;

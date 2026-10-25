@@ -18,7 +18,7 @@ describe('internationalisation', () => {
     }
   });
   it('étiquette comme fictifs les champs de démonstration', () => {
-    for (const k of ['auth.demoColor', 'auth.demoCity', 'apply.demo.color', 'apply.demo.city', 'apply.demo.digit']) {
+    for (const k of ['auth.demoColor', 'auth.demoCity', 'apply.demo.color', 'apply.demo.year', 'apply.demo.digit']) {
       expect(dictionaries.fr[k]).toContain('(fictif)');
       expect(dictionaries.en[k]).toContain('(fictional)');
     }

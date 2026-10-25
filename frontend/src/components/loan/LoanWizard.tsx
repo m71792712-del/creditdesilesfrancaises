@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, Banknote, Check, CircleX, FileText, Hash, Landmark, Loader2, MapPin, Palette, CreditCard, Tag, TriangleAlert, Coins } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Banknote, Check, CircleX, FileText, Hash, Landmark, Loader2, CalendarDays, Palette, CreditCard, Tag, TriangleAlert, Coins } from 'lucide-react';
 import { submitLoanRequest } from '@/lib/actions/loan';
 import { SIMULATION } from '@/lib/config';
 import { CURRENCIES, OTHER_PURPOSE } from '@/lib/constants/statuses';
@@ -22,17 +22,17 @@ interface Props {
   purposes: Purpose[];
   cardTypes: CardType[];
   limits: Limits;
-  defaults: { demoColor: string; demoCity: string; demoDigit: string };
 }
 
 const STEPS = 5;
 const VERIFY_MS = 8000;
 
-export function LoanWizard({ banks, purposes, cardTypes, limits, defaults }: Props) {
+export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
   const { t, locale } = useI18n();
   const initial: LoanFormValues = {
     amount: '', currency: 'EUR', description: '', purposeCode: '', purposeDetails: '',
-    bankId: '', otherBankName: '', cardTypeId: '', ...defaults,
+    bankId: '', otherBankName: '', cardTypeId: '',
+    demoColor: '', demoDigit: '', demoYear: '', // vérification pédagogique : toujours vide au départ (distincte du profil)
   };
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<LoanFormValues>(initial);
@@ -220,8 +220,8 @@ export function LoanWizard({ banks, purposes, cardTypes, limits, defaults }: Pro
                 [Landmark, t('req.bank'), bank ? bank.name : t('req.customBank', { name: values.otherBankName })],
                 [CreditCard, t('apply.card'), card ? card.name : t('common.none')],
                 [Palette, t('apply.demo.color'), values.demoColor],
-                [MapPin, t('apply.demo.city'), values.demoCity],
                 [Hash, t('apply.demo.digit'), values.demoDigit],
+                [CalendarDays, t('apply.demo.year'), values.demoYear],
               ].map(([Icon, label, value]) => {
                 const I = Icon as typeof Banknote;
                 return (
@@ -278,15 +278,15 @@ function VerificationStep({ values, errors, update }: { values: LoanFormValues; 
     <>
       <div role="note" className="flex gap-3 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
         <TriangleAlert className="mt-0.5 h-5 w-5 shrink-0" aria-hidden />
-        
+        <p>{t('apply.demo.warning')}</p>
       </div>
-      <TextField label={t('apply.demo.color')} required maxLength={30} autoComplete="off" placeholder={t('ph.color')} value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value })} error={errors.demoColor} />
+      <TextField label={t('apply.demo.color')} icon={Palette} required maxLength={30} autoComplete="off" placeholder={t('ph.color')} value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value })} error={errors.demoColor} />
       <div className="grid gap-4 sm:grid-cols-2">
-        <TextField label={t('apply.demo.city')} icon={MapPin} required maxLength={60} autoComplete="off" placeholder={t('ph.city')} value={values.demoCity} onChange={(e) => update({ demoCity: e.target.value })} error={errors.demoCity} />
         <SelectField label={t('apply.demo.digit')} required value={values.demoDigit} onChange={(e) => update({ demoDigit: e.target.value })} error={errors.demoDigit}>
           <option value="" disabled>{t('apply.demo.digit.ph')}</option>
           {Array.from({ length: 10 }, (_, i) => <option key={i} value={String(i)}>{i}</option>)}
         </SelectField>
+        <TextField label={t('apply.demo.year')} icon={CalendarDays} required inputMode="numeric" maxLength={4} autoComplete="off" placeholder={t('ph.year')} value={values.demoYear} onChange={(e) => update({ demoYear: e.target.value.replace(/\D/g, '') })} error={errors.demoYear} />
       </div>
       <div>
         <div className="mb-1 flex justify-between text-sm font-medium text-slate-700"><span>{t('apply.demo.progress')}</span><span aria-hidden>{progress}%</span></div>
@@ -337,4 +337,4 @@ function Processing({ onDone }: { onDone: () => void }) {
       <p className="text-sm text-slate-500">{t('proc.wait')}</p>
     </div>
   );
-}
+}v

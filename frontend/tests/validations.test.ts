@@ -7,7 +7,7 @@ const BANK = '3f2b8c1e-5a4d-4e6f-9b7a-1c2d3e4f5a6b';
 const valid: LoanFormValues = {
   amount: '5000', currency: 'EUR', description: 'Projet fictif de démonstration pour les tests automatisés.',
   purposeCode: 'personal', purposeDetails: '', bankId: BANK, otherBankName: '', cardTypeId: '',
-  demoColor: 'Bleu', demoCity: 'Cotonou', demoDigit: '7',
+  demoColor: 'Bleu', demoDigit: '000', demoYear: '2026',
 };
 const errs = (v: unknown) => {
   const r = makeLoanSchema(limits).safeParse(v);
@@ -15,7 +15,7 @@ const errs = (v: unknown) => {
 };
 
 describe('inscription', () => {
-  const ok = { lastName: 'Dupont', firstName: 'Jean', phone: '+590 690 00 00 00', email: 'Jean@Exemple.com', demoColor: 'Bleu', demoCity: 'Pointe-à-Pitre', password: 'Motdepasse1', terms: 'on' };
+  const ok = { lastName: 'Dupont', firstName: 'Jean', phone: '+590 690 00 00 00', email: 'Jean@Exemple.com', demoColor: 'Bleu', demoCity: 'Nice', demoDigit: '000',password: 'Motdepasse1', terms: 'on' };
   it('accepte une inscription valide et normalise l’e-mail', () => {
     const r = registerSchema.safeParse(ok);
     expect(r.success).toBe(true);

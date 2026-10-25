@@ -18,8 +18,8 @@ export interface LoanFormValues {
   otherBankName: string;
   cardTypeId: string; // uuid ou chaîne vide
   demoColor: string;
-  demoCity: string;
   demoDigit: string; // « 0 » à « 9 »
+  demoYear: string; // année à 4 chiffres (2026 à 2100)
 }
 
 /** Étapes : 1 informations · 2 motif · 3 banque · 4 vérification pédagogique · 5 récapitulatif. */
@@ -27,7 +27,7 @@ export const LOAN_STEP_FIELDS: string[][] = [
   ['amount', 'currency', 'description'],
   ['purposeCode', 'purposeDetails'],
   ['bankId', 'otherBankName', 'cardTypeId'],
-  ['demoColor', 'demoCity', 'demoDigit'],
+  ['demoColor', 'demoDigit', 'demoYear'],
   [],
 ];
 
@@ -46,8 +46,11 @@ export function makeLoanBaseSchema(limits: Limits) {
     otherBankName: z.string().trim().max(100, 'v.otherBank').default(''),
     cardTypeId: z.string().refine((v) => v === '' || UUID_RE.test(v), 'v.invalid').default(''),
     demoColor: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
-    demoCity: z.string().trim().min(1, 'v.required').max(60, 'v.max'),
     demoDigit: z.string().regex(/^[0-9]$/, 'v.digit'),
+    demoYear: z
+      .string()
+      .regex(/^[0-9]{4}$/, 'v.year')
+      .refine((v) => Number(v) >= 1900 && Number(v) <= 2100, 'v.year'),
   });
 }
 

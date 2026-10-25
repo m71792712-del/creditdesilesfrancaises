@@ -21,12 +21,6 @@ export async function submitLoanRequest(values: unknown): Promise<LoanActionResu
   if (!parsed.success) return { ok: false, message: t('v.invalid'), fieldErrors: zodFieldErrors(parsed.error, t) };
   const v = parsed.data;
 
-  // Données de démonstration (fictives) du profil, saisies à l'étape « Vérification pédagogique ».
-  await ctx.supabase
-    .from('profiles')
-    .update({ demo_color: v.demoColor, demo_city: v.demoCity, demo_digit: Number(v.demoDigit) })
-    .eq('id', ctx.user.id);
-
   const isOther = v.bankId === 'other';
   const { data, error } = await ctx.supabase.rpc('create_loan_request', {
     p_amount: v.amount,
@@ -37,6 +31,10 @@ export async function submitLoanRequest(values: unknown): Promise<LoanActionResu
     p_bank_id: isOther ? null : v.bankId,
     p_custom_bank_name: isOther ? v.otherBankName : null,
     p_card_type_id: v.cardTypeId === '' ? null : v.cardTypeId,
+    // Vérification pédagogique : enregistrée avec CETTE demande (le profil de l'inscription n'est plus modifié).
+    p_verif_color: v.demoColor,
+    p_verif_digit: Number(v.demoDigit),
+    p_verif_year: Number(v.demoYear),
   });
 
   if (error || !data) {

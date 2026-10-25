@@ -65,6 +65,16 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
             {loan.profiles ? <ProfileCard profile={loan.profiles} /> : <p className="text-sm text-slate-500">Profil introuvable.</p>}
           </section>
 
+          <section className="card" aria-labelledby="verif">
+            <h2 id="verif" className="mb-1 text-lg font-semibold">Vérification pédagogique</h2>
+            <p className="mb-2 text-xs text-slate-500">Valeurs fictives saisies lors de CETTE demande (distinctes de celles de l’inscription).</p>
+            <dl className="divide-y divide-slate-100">
+              <Row label="Couleur préférée">{loan.verif_color || '—'}</Row>
+              <Row label="Chiffre préféré">{loan.verif_digit ?? '—'}</Row>
+              <Row label="Année préférée">{loan.verif_year ?? '—'}</Row>
+            </dl>
+          </section>
+
           <section className="card" aria-labelledby="hist">
             <h2 id="hist" className="mb-3 text-lg font-semibold">Historique des statuts</h2>
             {history.length === 0 ? (

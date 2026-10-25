@@ -40,6 +40,7 @@ export async function register(_prev: ActionState, formData: FormData): Promise<
     email: formString(formData, 'email'),
     demoColor: formString(formData, 'demoColor'),
     demoCity: formString(formData, 'demoCity'),
+    demoDigit: formString(formData, 'demoDigit'),
   };
   const parsed = registerSchema.safeParse({ ...values, password: formString(formData, 'password'), terms: formString(formData, 'terms') });
   if (!parsed.success) return { ok: false, fieldErrors: zodFieldErrors(parsed.error, t), values };
@@ -50,7 +51,7 @@ export async function register(_prev: ActionState, formData: FormData): Promise<
     email: d.email,
     password: d.password,
     options: {
-      data: { first_name: d.firstName, last_name: d.lastName, phone: d.phone, demo_color: d.demoColor, demo_city: d.demoCity },
+      data: { first_name: d.firstName, last_name: d.lastName, phone: d.phone, demo_color: d.demoColor, demo_city: d.demoCity, demo_digit: d.demoDigit },
       emailRedirectTo: `${SITE_URL}/auth/callback?next=/dashboard`,
       captchaToken: captchaToken(formData),
     },
