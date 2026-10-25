@@ -46,7 +46,7 @@ export const fr: Dictionary = {
   'how.2.title': 'Faites votre demande',
   'how.2.text': 'Formulaire en ligne',
   'how.3.title': 'Analyse de votre dossier',
-  'how.3.text': 'Traitement simulé',
+  'how.3.text': 'Traitement fait par nos agent compétent',
   'how.4.title': 'Consultez le résultat',
   'how.4.text': 'Dans votre espace',
   'band.text': 'Ensemble pour le développement des îles',
