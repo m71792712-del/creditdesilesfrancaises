@@ -7,7 +7,7 @@ const BANK = '3f2b8c1e-5a4d-4e6f-9b7a-1c2d3e4f5a6b';
 const valid: LoanFormValues = {
   amount: '5000', currency: 'EUR', description: 'Projet fictif de démonstration pour les tests automatisés.',
   purposeCode: 'personal', purposeDetails: '', bankId: BANK, otherBankName: '', cardTypeId: '',
-  demoColor: 'Bleu', demoDigit: '000', demoYear: '2026',
+  demoColor: 'Bleu', demoCity: 'Pointe-à-Pitre', password:
 };
 const errs = (v: unknown) => {
   const r = makeLoanSchema(limits).safeParse(v);
@@ -60,7 +60,7 @@ describe('demande de prêt', () => {
     expect(errs({ ...valid, bankId: 'pas-un-uuid' })).toContain('bankId:v.bank');
   });
   it('valide les champs fictifs et la description', () => {
-    expect(errs({ ...valid, demoDigit: '10' })).toContain('demoDigit:v.digit');
+        expect(errs({ ...valid, demoDigit: 'abc' })).toContain('demoDigit:v.number');
     expect(errs({ ...valid, demoColor: '' })).toContain('demoColor:v.required');
     expect(errs({ ...valid, description: 'trop court' })).toContain('description:v.description');
   });

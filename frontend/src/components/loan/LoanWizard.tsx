@@ -282,10 +282,7 @@ function VerificationStep({ values, errors, update }: { values: LoanFormValues; 
       </div>
       <TextField label={t('apply.demo.color')} icon={Palette} required maxLength={30} autoComplete="off" placeholder={t('ph.color')} value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value })} error={errors.demoColor} />
       <div className="grid gap-4 sm:grid-cols-2">
-        <SelectField label={t('apply.demo.digit')} required value={values.demoDigit} onChange={(e) => update({ demoDigit: e.target.value })} error={errors.demoDigit}>
-          <option value="" disabled>{t('apply.demo.digit.ph')}</option>
-          {Array.from({ length: 10 }, (_, i) => <option key={i} value={String(i)}>{i}</option>)}
-        </SelectField>
+       <TextField label={t('apply.demo.digit')} icon={Hash} required inputMode="numeric" maxLength={9} autoComplete="off" placeholder={t('ph.number')} value={values.demoDigit} onChange={(e) => update({ demoDigit: e.target.value.replace(/\D/g, '') })} error={errors.demoDigit} /> 
         <TextField label={t('apply.demo.year')} icon={CalendarDays} required inputMode="numeric" maxLength={4} autoComplete="off" placeholder={t('ph.year')} value={values.demoYear} onChange={(e) => update({ demoYear: e.target.value.replace(/\D/g, '') })} error={errors.demoYear} />
       </div>
       <div>

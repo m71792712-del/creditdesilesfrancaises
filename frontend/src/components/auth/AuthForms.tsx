@@ -7,7 +7,7 @@ import { forgotPassword, login, register, updatePassword } from '@/lib/actions/a
 import { useI18n } from '@/lib/i18n/provider';
 import { Captcha } from '@/components/ui/Captcha';
 import { FormMessage } from '@/components/ui/FormMessage';
-import { SelectField } from '@/components/ui/SelectField';
+
 import { SubmitButton } from '@/components/ui/SubmitButton';
 import { TextField } from '@/components/ui/TextField';
 
@@ -46,10 +46,7 @@ export function RegisterForm({ nonce }: { nonce?: string }) {
       <TextField name="email" type="email" icon={Mail} label={t('auth.email')} placeholder={t('ph.email')} autoComplete="email" required maxLength={254} defaultValue={v?.email} error={e?.email} />
       <TextField name="demoColor" label={t('auth.demoColor')} placeholder={t('ph.color')} autoComplete="off" required maxLength={30} defaultValue={v?.demoColor} error={e?.demoColor} />
       <TextField name="demoCity" icon={MapPin} label={t('auth.demoCity')} placeholder={t('ph.city')} autoComplete="off" required maxLength={60} defaultValue={v?.demoCity} error={e?.demoCity} />
-        <SelectField name="demoDigit" label={t('apply.demo.digit')} required defaultValue={v?.demoDigit ?? ''} error={e?.demoDigit}>
-        <option value="" disabled>{t('apply.demo.digit.ph')}</option>
-        {Array.from({ length: 10 }, (_, i) => <option key={i} value={String(i)}>{i}</option>)}
-      </SelectField>
+        
       <TextField name="password" type="password" icon={Lock} label={t('auth.password')} autoComplete="new-password" required minLength={8} maxLength={72} hint={t('auth.password.hint')} error={e?.password} />
       <div>
         <label className="flex items-start gap-3 text-sm">

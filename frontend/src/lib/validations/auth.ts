@@ -21,7 +21,7 @@ export const registerSchema = z.object({
   email,
   demoColor,
   demoCity,
-  demoDigit: z.string().regex(/^[0-9]$/, 'v.digit'),
+  
   password,
   terms: z.literal('on', { errorMap: () => ({ message: 'v.terms' }) }),
 });

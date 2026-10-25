@@ -27,9 +27,9 @@ export function ProfileCard({ profile, role, updatedAt }: { profile: ProfileInfo
       <dl className="divide-y divide-slate-100">
         <Row label="Couleur préférée">{profile.demo_color || '—'}</Row>
         <Row label="Ville">{profile.demo_city || '—'}</Row>
-        <Row label="Chiffre préféré">{profile.demo_digit ?? '—'}</Row>
+        
       </dl>
-      <p className="mt-3 text-xs text-slate-500">Ces trois champs sont fictifs : ils ne servent jamais à authentifier ni à récupérer un compte.</p>
+      <p className="mt-3 text-xs text-slate-500">Ces champs sont fictifs : ils ne servent jamais à authentifier ni à récupérer un compte.</p>
     </>
   );
 }

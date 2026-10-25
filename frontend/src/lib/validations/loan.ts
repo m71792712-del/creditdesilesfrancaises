@@ -46,7 +46,7 @@ export function makeLoanBaseSchema(limits: Limits) {
     otherBankName: z.string().trim().max(100, 'v.otherBank').default(''),
     cardTypeId: z.string().refine((v) => v === '' || UUID_RE.test(v), 'v.invalid').default(''),
     demoColor: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
-    demoDigit: z.string().regex(/^[0-9]$/, 'v.digit'),
+    demoDigit: z.string().regex(/^[0-9]{1,9}$/, 'v.number'),
     demoYear: z
       .string()
       .regex(/^[0-9]{4}$/, 'v.year')
