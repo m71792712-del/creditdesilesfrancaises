@@ -20,7 +20,7 @@ export interface LoanFormValues {
   demoAnimal: string;
   cardTypeId: string; // uuid, « other », ou chaîne vide (aucune carte)
   otherCardName: string;
-  demoColor: number;
+  demoColor: string;
   demoDigit: string; // « 0 » à « 9 »
   demoYear: string; // année à 4 chiffres (1900 à 2100)
 }
