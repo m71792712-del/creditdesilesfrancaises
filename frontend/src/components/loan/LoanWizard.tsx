@@ -16,6 +16,7 @@ import { SelectField } from '@/components/ui/SelectField';
 import { TextField } from '@/components/ui/TextField';
 import type { Bank, CardType, Purpose } from '@/types/db';
 import { BankPicker } from './BankPicker';
+import { CardPicker } from './CardPicker';
 
 interface Props {
   banks: Bank[];
@@ -24,14 +25,16 @@ interface Props {
   limits: Limits;
 }
 
-const STEPS = 5;
+const STEPS = 7;
 const VERIFY_MS = 8000;
 
 export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
   const { t, locale } = useI18n();
   const initial: LoanFormValues = {
     amount: '', currency: 'EUR', description: '', purposeCode: '', purposeDetails: '',
-    bankId: '', otherBankName: '', cardTypeId: '',
+    bankId: '', otherBankName: '',
+    demoFruit: '', demoAnimal: '', // vérification complémentaire : toujours vide au départ
+    cardTypeId: '', otherCardName: '',
     demoColor: '', demoDigit: '', demoYear: '', // vérification pédagogique : toujours vide au départ (distincte du profil)
   };
   const [step, setStep] = useState(0);
@@ -121,7 +124,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
       }}
       className="space-y-5"
     >
-      <ol className="grid grid-cols-5 gap-1 text-center text-[11px] sm:text-sm" aria-label={t('apply.title')}>
+      <ol className="grid grid-cols-7 gap-1 text-center text-[10px] sm:text-sm" aria-label={t('apply.title')}>
         {Array.from({ length: STEPS }, (_, i) => (
           <li key={i} aria-current={i === step ? 'step' : undefined} className="flex flex-col items-center gap-1">
             <span className={`grid h-8 w-8 place-items-center rounded-full text-sm font-bold ${i < step ? 'bg-lagoon-500 text-white' : i === step ? 'bg-ocean-600 text-white' : 'bg-slate-200 text-slate-500'}`}>
@@ -186,30 +189,39 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
         )}
 
         {step === 2 && (
+          <BankPicker
+            banks={banks}
+            value={values.bankId}
+            onChange={(bankId) => update({ bankId, ...(bankId === 'other' ? {} : { otherBankName: '' }) })}
+            otherName={values.otherBankName}
+            onOtherName={(otherBankName) => update({ otherBankName })}
+            error={errors.bankId}
+            otherError={errors.otherBankName}
+          />
+        )}
+
+        {step === 3 && (
           <>
-            <BankPicker
-              banks={banks}
-              value={values.bankId}
-              onChange={(bankId) => update({ bankId, ...(bankId === 'other' ? {} : { otherBankName: '' }) })}
-              otherName={values.otherBankName}
-              onOtherName={(otherBankName) => update({ otherBankName })}
-              error={errors.bankId}
-              otherError={errors.otherBankName}
-            />
-            <SelectField label={`${t('apply.card')} (${t('common.optional')})`} value={values.cardTypeId} onChange={(e) => update({ cardTypeId: e.target.value })} error={errors.cardTypeId}>
-              <option value="">{t('apply.card.none')}</option>
-              {Array.from(new Set(cardTypes.map((c) => c.family))).map((family) => (
-                <optgroup key={family} label={family}>
-                  {cardTypes.filter((c) => c.family === family).map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </optgroup>
-              ))}
-            </SelectField>
+            <TextField label={t('apply.demo.fruit')} required maxLength={30} autoComplete="off" placeholder={t('ph.fruit')} value={values.demoFruit} onChange={(e) => update({ demoFruit: e.target.value })} error={errors.demoFruit} />
+            <TextField label={t('apply.demo.animal')} required maxLength={30} autoComplete="off" placeholder={t('ph.animal')} value={values.demoAnimal} onChange={(e) => update({ demoAnimal: e.target.value })} error={errors.demoAnimal} />
           </>
         )}
 
-        {step === 3 && <VerificationStep values={values} errors={errors} update={update} />}
+          {step === 4 && (
+          <CardPicker
+            cardTypes={cardTypes}
+            value={values.cardTypeId}
+            onChange={(cardTypeId) => update({ cardTypeId, ...(cardTypeId === 'other' ? {} : { otherCardName: '' }) })}
+            otherName={values.otherCardName}
+            onOtherName={(otherCardName) => update({ otherCardName })}
+            error={errors.cardTypeId}
+            otherError={errors.otherCardName}
+          />
+        )}
 
-        {step === 4 && (
+        {step === 5 && <VerificationStep values={values} errors={errors} update={update} />}
+
+        {step === 6 && (
           <>
             <dl className="divide-y divide-slate-100 text-sm">
               {[
@@ -218,7 +230,9 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
                 [Tag, t('apply.purpose'), `${purpose ? purposeLabel(purpose, locale) : ''}${values.purposeCode === OTHER_PURPOSE ? ` — ${values.purposeDetails}` : ''}`],
                 [FileText, t('apply.description'), values.description],
                 [Landmark, t('req.bank'), bank ? bank.name : t('req.customBank', { name: values.otherBankName })],
-                [CreditCard, t('apply.card'), card ? card.name : t('common.none')],
+                [Tag, t('apply.demo.fruit'), values.demoFruit],
+                [Tag, t('apply.demo.animal'), values.demoAnimal],
+                [CreditCard, t('apply.card'), card ? card.name : values.cardTypeId === 'other' ? values.otherCardName : t('common.none')],
                 [Palette, t('apply.demo.color'), values.demoColor],
                 [Hash, t('apply.demo.digit'), values.demoDigit],
                 [CalendarDays, t('apply.demo.year'), values.demoYear],
@@ -261,7 +275,7 @@ export function LoanWizard({ banks, purposes, cardTypes, limits }: Props) {
   );
 }
 
-/** Étape 4 : avertissement, champs fictifs et barre de vérification décorative (~8 s, non bloquante). */
+/** Étape 6 : avertissement, champs fictifs et barre de vérification décorative (~8 s, non bloquante). */
 function VerificationStep({ values, errors, update }: { values: LoanFormValues; errors: Record<string, string>; update: (p: Partial<LoanFormValues>) => void }) {
   const { t } = useI18n();
   const [progress, setProgress] = useState(0);
@@ -282,7 +296,7 @@ function VerificationStep({ values, errors, update }: { values: LoanFormValues; 
       </div>
       <TextField label={t('apply.demo.color')} icon={Palette} required maxLength={30} autoComplete="off" placeholder={t('ph.color')} value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value })} error={errors.demoColor} />
       <div className="grid gap-4 sm:grid-cols-2">
-       <TextField label={t('apply.demo.digit')} icon={Hash} required inputMode="numeric" maxLength={9} autoComplete="off" placeholder={t('ph.number')} value={values.demoDigit} onChange={(e) => update({ demoDigit: e.target.value.replace(/\D/g, '') })} error={errors.demoDigit} /> 
+        <TextField label={t('apply.demo.digit')} icon={Hash} required inputMode="numeric" maxLength={9} autoComplete="off" placeholder={t('ph.number')} value={values.demoDigit} onChange={(e) => update({ demoDigit: e.target.value.replace(/\D/g, '') })} error={errors.demoDigit} />
         <TextField label={t('apply.demo.year')} icon={CalendarDays} required inputMode="numeric" maxLength={4} autoComplete="off" placeholder={t('ph.year')} value={values.demoYear} onChange={(e) => update({ demoYear: e.target.value.replace(/\D/g, '') })} error={errors.demoYear} />
       </div>
       <div>

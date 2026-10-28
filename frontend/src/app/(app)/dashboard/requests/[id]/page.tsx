@@ -30,7 +30,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
     [t('req.currency'), loan.currency],
     [t('req.createdAt'), formatDate(loan.created_at, locale, true)],
     [t('req.bank'), bank],
-    [t('req.cardType'), loan.card_types?.name ?? t('common.none')],
+    [t('req.cardType'), loan.card_types?.name ?? (loan.custom_card_name ? t('req.customCard', { name: loan.custom_card_name }) : t('common.none'))],
   ];
 
   return (

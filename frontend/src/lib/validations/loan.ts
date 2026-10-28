@@ -16,17 +16,22 @@ export interface LoanFormValues {
   purposeDetails: string;
   bankId: string; // uuid d'une banque, ou « other »
   otherBankName: string;
-  cardTypeId: string; // uuid ou chaîne vide
-  demoColor: string;
+  demoFruit: string;
+  demoAnimal: string;
+  cardTypeId: string; // uuid, « other », ou chaîne vide (aucune carte)
+  otherCardName: string;
+  demoColor: number;
   demoDigit: string; // « 0 » à « 9 »
-  demoYear: string; // année à 4 chiffres (2026 à 2100)
+  demoYear: string; // année à 4 chiffres (1900 à 2100)
 }
 
-/** Étapes : 1 informations · 2 motif · 3 banque · 4 vérification pédagogique · 5 récapitulatif. */
+/** Étapes : 1 informations · 2 motif · 3 banque · 4 vérification · 5 carte · 6 vérification pédagogique · 7 récapitulatif. */
 export const LOAN_STEP_FIELDS: string[][] = [
   ['amount', 'currency', 'description'],
   ['purposeCode', 'purposeDetails'],
-  ['bankId', 'otherBankName', 'cardTypeId'],
+  ['bankId', 'otherBankName'],
+  ['demoFruit', 'demoAnimal'],
+  ['cardTypeId', 'otherCardName'],
   ['demoColor', 'demoDigit', 'demoYear'],
   [],
 ];
@@ -44,7 +49,10 @@ export function makeLoanBaseSchema(limits: Limits) {
     purposeDetails: z.string().trim().max(300, 'v.purposeDetails').default(''),
     bankId: z.string().refine((v) => v === 'other' || UUID_RE.test(v), 'v.bank'),
     otherBankName: z.string().trim().max(100, 'v.otherBank').default(''),
-    cardTypeId: z.string().refine((v) => v === '' || UUID_RE.test(v), 'v.invalid').default(''),
+    demoFruit: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
+    demoAnimal: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
+    cardTypeId: z.string().refine((v) => v === '' || v === 'other' || UUID_RE.test(v), 'v.invalid').default(''),
+    otherCardName: z.string().trim().max(60, 'v.otherCard').default(''),
     demoColor: z.string().trim().min(1, 'v.required').max(30, 'v.max'),
     demoDigit: z.string().regex(/^[0-9]{1,9}$/, 'v.number'),
     demoYear: z
@@ -54,13 +62,21 @@ export function makeLoanBaseSchema(limits: Limits) {
   });
 }
 
-type Conditional = { purposeCode: string; purposeDetails: string; bankId: string; otherBankName: string };
+type Conditional = {
+  purposeCode: string;
+  purposeDetails: string;
+  bankId: string;
+  otherBankName: string;
+  cardTypeId: string;
+  otherCardName: string;
+};
 
-/** Précision obligatoire UNIQUEMENT pour « Autre (à préciser) » ; nom de banque UNIQUEMENT pour « Autre banque ». */
+/** Précision obligatoire UNIQUEMENT pour « Autre (à préciser) » ; nom de banque/carte UNIQUEMENT pour « Autre ». */
 export function conditionalIssues(v: Conditional): { path: string; message: string }[] {
   const issues: { path: string; message: string }[] = [];
   const details = v.purposeDetails.trim();
   const bank = v.otherBankName.trim();
+  const card = v.otherCardName.trim();
   if (v.purposeCode === OTHER_PURPOSE) {
     if (details.length < 3) issues.push({ path: 'purposeDetails', message: 'v.purposeDetails' });
   } else if (details.length > 0) {
@@ -70,6 +86,11 @@ export function conditionalIssues(v: Conditional): { path: string; message: stri
     if (bank.length < 2) issues.push({ path: 'otherBankName', message: 'v.otherBank' });
   } else if (bank.length > 0) {
     issues.push({ path: 'otherBankName', message: 'v.otherBankUnexpected' });
+  }
+  if (v.cardTypeId === 'other') {
+    if (card.length < 2) issues.push({ path: 'otherCardName', message: 'v.otherCard' });
+  } else if (card.length > 0) {
+    issues.push({ path: 'otherCardName', message: 'v.otherCardUnexpected' });
   }
   return issues;
 }

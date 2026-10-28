@@ -40,3 +40,14 @@ export function formatDate(iso: string, locale: string, withTime = false): strin
 export function initials(first: string, last: string): string {
   return `${first.trim().charAt(0)}${last.trim().charAt(0)}`.toUpperCase() || '?';
 }
+
+
+/** Transforme un nom (ex. « American Express ») en identifiant de fichier (ex. « american-express »). */
+export function slugify(name: string): string {
+  return name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}

@@ -4,8 +4,7 @@ import type { Limits } from '@/lib/validations/loan';
 import type { Bank, CardType, HistoryRow, LoanRow, Purpose } from '@/types/db';
 
 const LOAN_COLUMNS =
-  'id,amount,currency,purpose_code,purpose_details,description,custom_bank_name,status,created_at,banks(name,slug),card_types(name),loan_purposes(label_fr,label_en)';
-
+  'id,amount,currency,purpose_code,purpose_details,description,custom_bank_name,custom_card_name,status,created_at,banks(name,slug),card_types(name),loan_purposes(label_fr,label_en)';
 export type LoanWithPurpose = LoanRow & { loan_purposes: { label_fr: string; label_en: string } | null };
 
 /** Limites de montant (app_settings), avec valeurs de repli. */

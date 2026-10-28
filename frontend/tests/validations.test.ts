@@ -6,8 +6,8 @@ const limits = { min: 500, max: 100000 };
 const BANK = '3f2b8c1e-5a4d-4e6f-9b7a-1c2d3e4f5a6b';
 const valid: LoanFormValues = {
   amount: '5000', currency: 'EUR', description: 'Projet fictif de démonstration pour les tests automatisés.',
-  purposeCode: 'personal', purposeDetails: '', bankId: BANK, otherBankName: '', cardTypeId: '',
-  demoColor: 'Bleu', demoCity: 'Pointe-à-Pitre', password:
+  purposeCode: 'personal', purposeDetails: '', bankId: BANK, otherBankName: '', demoFruit: 'Mangue', demoAnimal: 'Iguane', cardTypeId: '', otherCardName: '',
+  demoColor: 'Bleu', demoDigit: '7', demoYear: '1998',
 };
 const errs = (v: unknown) => {
   const r = makeLoanSchema(limits).safeParse(v);

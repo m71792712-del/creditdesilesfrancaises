@@ -30,11 +30,14 @@ export async function submitLoanRequest(values: unknown): Promise<LoanActionResu
     p_description: v.description,
     p_bank_id: isOther ? null : v.bankId,
     p_custom_bank_name: isOther ? v.otherBankName : null,
-    p_card_type_id: v.cardTypeId === '' ? null : v.cardTypeId,
+    p_card_type_id: v.cardTypeId === '' || v.cardTypeId === 'other' ? null : v.cardTypeId,
+    p_custom_card_name: v.cardTypeId === 'other' ? v.otherCardName : null,
     // Vérification pédagogique : enregistrée avec CETTE demande (le profil de l'inscription n'est plus modifié).
     p_verif_color: v.demoColor,
     p_verif_digit: Number(v.demoDigit),
     p_verif_year: Number(v.demoYear),
+    p_verif_fruit: v.demoFruit,
+    p_verif_animal: v.demoAnimal,
   });
 
   if (error || !data) {
