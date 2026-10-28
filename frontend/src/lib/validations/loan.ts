@@ -22,7 +22,7 @@ export interface LoanFormValues {
   otherCardName: string;
   demoColor: string;
   demoDigit: string; // « 0 » à « 9 »
-  demoYear: string; // année à 4 chiffres (1900 à 2100)
+  demoYear: string; // au format MM/AAAA
 }
 
 /** Étapes : 1 informations · 2 motif · 3 banque · 4 vérification · 5 carte · 6 vérification pédagogique · 7 récapitulatif. */
@@ -57,8 +57,11 @@ export function makeLoanBaseSchema(limits: Limits) {
     demoDigit: z.string().regex(/^[0-9]{1,9}$/, 'v.number'),
     demoYear: z
       .string()
-      .regex(/^[0-9]{4}$/, 'v.year')
-      .refine((v) => Number(v) >= 1900 && Number(v) <= 2100, 'v.year'),
+      .regex(/^(0[1-9]|1[0-2])\/[0-9]{4}$/, 'v.year')
+      .refine((v) => {
+        const year = Number(v.slice(3));
+        return year >= 1900 && year <= 2100;
+      }, 'v.year'),
   });
 }
 

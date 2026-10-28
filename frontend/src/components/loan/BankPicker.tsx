@@ -1,14 +1,15 @@
 'use client';
 
 import { useId, useMemo, useState } from 'react';
-import { Search } from 'lucide-react';
 import { SelectField } from '@/components/ui/SelectField';
 import { TextField } from '@/components/ui/TextField';
 import { useI18n } from '@/lib/i18n/provider';
 import type { Bank } from '@/types/db';
 import { BankLogo } from './BankLogo';
 
-const norm = (s: string) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+// Une banque sans territoire reste visible : elle est rangée sous « Non précisé ».
+const FALLBACK_TERRITORY = 'Non précisé';
+const territoryOf = (b: Bank) => b.territory || FALLBACK_TERRITORY;
 
 interface Props {
   banks: Bank[];
@@ -20,19 +21,15 @@ interface Props {
   otherError?: string;
 }
 
-/** Grille de banques : recherche, filtres Pays/territoire et Type, option « Autre banque ». Boutons radio natifs (clavier + lecteur d'écran). */
+/** Grille de banques : choix du pays / territoire, option « Autre banque ». Boutons radio natifs (clavier + lecteur d'écran). */
 export function BankPicker({ banks, value, onChange, otherName, onOtherName, error, otherError }: Props) {
   const { t } = useI18n();
   const uid = useId();
-  const [query, setQuery] = useState('');
-  const [territory, setTerritory] = useState('');
-  const [type, setType] = useState('');
 
-  const territories = useMemo(() => Array.from(new Set(banks.map((b) => b.territory).filter(Boolean))).sort((a, b) => a.localeCompare(b)), [banks]);
-  const filtered = useMemo(() => {
-    const q = norm(query.trim());
-    return banks.filter((b) => (!territory || b.territory === territory) && (!type || b.type === type) && (!q || norm(b.name).includes(q)));
-  }, [banks, query, territory, type]);
+  const territories = useMemo(() => Array.from(new Set(banks.map(territoryOf))).sort((a, b) => a.localeCompare(b)), [banks]);
+  // Pas d'option « Tous » : un territoire est toujours sélectionné (le premier de la liste par défaut).
+  const [territory, setTerritory] = useState(() => territories[0] ?? '');
+  const filtered = useMemo(() => banks.filter((b) => !territory || territoryOf(b) === territory), [banks, territory]);
   const selected = banks.find((b) => b.id === value);
 
   const tile = (checked: boolean) =>
@@ -40,20 +37,9 @@ export function BankPicker({ banks, value, onChange, otherName, onOtherName, err
 
   return (
     <div className="space-y-4">
-      <div className="relative">
-        <label htmlFor={`${uid}-q`} className="sr-only">{t('apply.bank.search')}</label>
-        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" aria-hidden />
-        <input id={`${uid}-q`} type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t('apply.bank.search')} maxLength={100} className="input pl-10" />
-      </div>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="max-w-sm">
         <SelectField label={t('apply.bank.territory')} value={territory} onChange={(e) => setTerritory(e.target.value)}>
-          <option value="">{t('apply.bank.all')}</option>
           {territories.map((x) => <option key={x} value={x}>{x}</option>)}
-        </SelectField>
-        <SelectField label={t('apply.bank.type')} value={type} onChange={(e) => setType(e.target.value)}>
-          <option value="">{t('apply.bank.all')}</option>
-          <option value="bank">{t('apply.bank.type.bank')}</option>
-          <option value="fintech">{t('apply.bank.type.fintech')}</option>
         </SelectField>
       </div>
 

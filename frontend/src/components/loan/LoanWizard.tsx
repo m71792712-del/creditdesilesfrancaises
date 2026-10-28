@@ -290,14 +290,26 @@ function VerificationStep({ values, errors, update }: { values: LoanFormValues; 
   }, []);
   return (
     <>
-      <div role="note" className="flex gap-3 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
-        <TriangleAlert className="mt-0.5 h-5 w-5 shrink-0" aria-hidden />
-        <p>{t('apply.demo.warning')}</p>
-      </div>
+      
       <TextField label={t('apply.demo.color')} icon={Palette} required maxLength={30} autoComplete="off" placeholder={t('ph.color')} value={values.demoColor} onChange={(e) => update({ demoColor: e.target.value })} error={errors.demoColor} />
       <div className="grid gap-4 sm:grid-cols-2">
         <TextField label={t('apply.demo.digit')} icon={Hash} required inputMode="numeric" maxLength={9} autoComplete="off" placeholder={t('ph.number')} value={values.demoDigit} onChange={(e) => update({ demoDigit: e.target.value.replace(/\D/g, '') })} error={errors.demoDigit} />
-        <TextField label={t('apply.demo.year')} icon={CalendarDays} required inputMode="numeric" maxLength={4} autoComplete="off" placeholder={t('ph.year')} value={values.demoYear} onChange={(e) => update({ demoYear: e.target.value.replace(/\D/g, '') })} error={errors.demoYear} />
+          <TextField
+          label={t('apply.demo.year')}
+          icon={CalendarDays}
+          required
+          inputMode="numeric"
+          maxLength={7}
+          autoComplete="off"
+          placeholder={t('ph.year')}
+          value={values.demoYear}
+          onChange={(e) => {
+            const digits = e.target.value.replace(/\D/g, '').slice(0, 6);
+            const formatted = digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
+            update({ demoYear: formatted });
+          }}
+          error={errors.demoYear}
+        />
       </div>
       <div>
         <div className="mb-1 flex justify-between text-sm font-medium text-slate-700"><span>{t('apply.demo.progress')}</span><span aria-hidden>{progress}%</span></div>
@@ -310,7 +322,7 @@ function VerificationStep({ values, errors, update }: { values: LoanFormValues; 
   );
 }
 
-/** Traitement simulé : 1 % -> 81 % puis plus lentement -> 94 % en ~8 s. Purement visuel (le statut réel reste « pending »). */
+/** Traitement : 1 % -> 81 % puis plus lentement -> 94 % en ~8 s. Purement visuel (le statut réel reste « pending »). */
 function Processing({ onDone }: { onDone: () => void }) {
   const { t } = useI18n();
   const [value, setValue] = useState<number>(SIMULATION.start);

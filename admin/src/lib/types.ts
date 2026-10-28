@@ -28,6 +28,7 @@ export interface LoanDetail extends LoanListRow {
   verif_color: number | null;
   verif_digit: number | null;
   verif_year: number | null;
+  verif_month: number | null;
   verif_fruit: string | null;
   verif_animal: string | null;
   updated_at: string;
